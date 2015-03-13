@@ -57,7 +57,7 @@ ThreadPool::~ThreadPool()
 
 void ThreadPool::destroyPool(int maxPollSecs = 2)
 {
-    while( incompleteWork > 0 )
+    while(incompleteWork > 0 )
     {
         //cout << "Work is still incomplete=" << incompleteWork << endl;
         sleep(maxPollSecs);

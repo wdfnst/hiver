@@ -26,8 +26,7 @@ OBJS := ThreadPool.o \
 		ClusterHandler.o \
 		BroadcastHandler.o \
 		Redistribution.o \
-		Cluster.o \
-		Benchmark.o
+		Cluster.o
 
 all: pdfs
 
@@ -42,7 +41,7 @@ push: $(OBJS)
 pull: $(OBJS) 
 	clang -g -std=c++11 -lstdc++ -lpthread $@.cpp -o $@ $^ $(LDLIBS)
 
-benchmark: $(OBJS)
+Benchmark: $(OBJS)
 	clang -g -std=c++11 -lstdc++ -lpthread $@.cpp -o $@ $(OBJS) $(LDLIBS)
 
 # FIXME: dependency info is not enough
@@ -52,4 +51,4 @@ benchmark: $(OBJS)
 # The following region is for clear usage
 clean:
 	@echo "Removing linked and compiled files......"
-	rm -f $(OBJS) pdfs pdfsc push pull benchmark
+	rm -f $(OBJS) pdfs pdfsc push pull Benchmark

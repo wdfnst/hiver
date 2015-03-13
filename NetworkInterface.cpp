@@ -43,7 +43,7 @@ ssize_t NetworkInterface::connect()
             return 1;
         }
         cluster_size = newClusterSize;
-        sleep(1);
+        usleep(600001);
     }
     return -1;
 }
