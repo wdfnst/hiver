@@ -12,7 +12,47 @@ std::list<std::string> Cluster::_expireNodes;
 size_t Cluster::clusterSize = 0;
 
 Cluster::Cluster(const std::map<std::string, float> &clusterMap)
-{ }
+{ 
+}
+
+void Cluster::getLocalIPv4Addr(string localIPv4Addr)
+{
+    struct ifaddrs * ifAddrStruct = NULL;
+    void * tmpAddrPtr = NULL;
+    string localIP;
+
+    getifaddrs(&ifAddrStruct);
+
+    while (ifAddrStruct != NULL) {
+        char addressBuffer[INET6_ADDRSTRLEN];
+        memset(addressBuffer, '\0', INET6_ADDRSTRLEN);
+        if (ifAddrStruct->ifa_addr->sa_family == AF_INET) { 
+            // check it is IP4 is a valid IP4 Address
+            tmpAddrPtr = 
+                &((struct sockaddr_in *)ifAddrStruct->ifa_addr)->sin_addr;
+            //char addressBuffer[INET_ADDRSTRLEN];
+            inet_ntop(AF_INET, tmpAddrPtr, addressBuffer, INET_ADDRSTRLEN);
+            localIPv4Addr = addressBuffer;
+            if (localIPv4Addr.find("192.168") == 0 
+                    || localIPv4Addr.find("10.") == 0)
+                return;
+        } else if (ifAddrStruct->ifa_addr->sa_family == AF_INET6) { 
+            // check it is IP6 is a valid IP6 Address
+            tmpAddrPtr = 
+                &((struct sockaddr_in *)ifAddrStruct->ifa_addr)->sin_addr;
+            inet_ntop(AF_INET6, tmpAddrPtr, addressBuffer, INET6_ADDRSTRLEN);
+        } 
+        ifAddrStruct=ifAddrStruct->ifa_next;
+    }
+}
+
+void Cluster::getBroadcastIPAddr(string broadcastIPAddr)
+{
+   string localIPAddr; 
+   getLocalIPv4Addr(localIPAddr);
+   localIPAddr = localIPAddr.substr(0, localIPAddr.find_last_of("."));
+   broadcastIPAddr = localIPAddr + ".255";
+}
 
 void Cluster::updateNodeStatus(std::string addr, const char *msg) 
 {

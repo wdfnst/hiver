@@ -20,7 +20,9 @@ unsigned BroadcastHandler::executeThis()
 
     bc_addr.sin_family = AF_INET;
     bc_addr.sin_port = htons(CLUSTER_PORT);
-    bc_addr.sin_addr.s_addr = inet_addr(BROADCAST_ADDR.c_str());
+    string broadcastAddr;
+    Cluster::getBroadcastIPAddr(broadcastAddr);
+    bc_addr.sin_addr.s_addr = inet_addr(broadcastAddr.c_str());
     bzero(&(bc_addr.sin_zero), 8);
 
     if((sockfd = (socket(AF_INET, SOCK_DGRAM, 0))) == -1) {

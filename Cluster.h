@@ -45,6 +45,8 @@ class Cluster {
         static unsigned short isLocalIP(std::string ip); 
         static bool isNewNode(std::string node);
 
+        static void getLocalIPv4Addr(string localIPv4Addr);
+        static void getBroadcastIPAddr(string broadcastIPAddr);
         static std::map<std::string, NodeStatus> &getNodeStatusMap();
         static std::list<std::string> &getExpireNodes(); 
         static void printClusterMap();
